@@ -66,7 +66,7 @@ class Display(tk.Tk):
 
         for t in range(0, 16):
             t = t/15
-            x, y = self.equation(self.red.get_pos(), self.black.get_pos(), self.green.get_pos(), t)
+            x, y = self.quadratic_bezier(self.red.get_pos(), self.black.get_pos(), self.green.get_pos(), t)
 
             if start is not None:
                 self.canvas.create_line(start[0], start[1], x, y, width=4, fill='#c7c7c7')
@@ -74,7 +74,7 @@ class Display(tk.Tk):
             start = (x,y)
 
 
-    def equation(self, p0:tuple, p1:tuple, p2:tuple, t:float) -> tuple:
+    def quadratic_bezier(self, p0:tuple, p1:tuple, p2:tuple, t:float) -> tuple:
         x = int((1-t)**2*p0[0] + (2*t*(1-t)*p1[0]) + t**2*p2[0])
         y = int((1-t)**2*p0[1] + (2*t*(1-t)*p1[1]) + t**2*p2[1])
 

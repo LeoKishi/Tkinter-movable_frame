@@ -2,7 +2,7 @@ import tkinter as tk
 
 
 class DragFrame(tk.Frame):
-    def __init__(self, parent, drag:bool = True, **kwargs):
+    def __init__(self, parent, *, drag:bool = True, **kwargs):
         '''Tkinter Frame with drag and drop functionality'''
 
         super().__init__(parent, **kwargs)
@@ -32,8 +32,7 @@ class DragFrame(tk.Frame):
 
     def _start_drag(self, event):
         if self._enabled:
-            x, y = self._get_offset()
-            self._offset = (x, y)
+            self._offset = self._get_offset()
             self._dragging = True
             self._clock()
     
@@ -55,24 +54,22 @@ class DragFrame(tk.Frame):
 
 
     def _check_border(self) -> tuple:
-        height = self._parent.winfo_height()
-        width = self._parent.winfo_width()
-        x, y = self._get_mouse_pos()
-        x_edge = self.winfo_width()//2
-        y_edge = self.winfo_height()//2
+        height, width = self._parent.winfo_height(), self._parent.winfo_width()
+        x_mouse, y_mouse = self._get_mouse_pos()
+        x_edge, y_edge = self.winfo_width()//2, self.winfo_height()//2
         x_offset, y_offset = self._offset
 
-        if (x - x_edge - x_offset) < 0:
-            x = x_edge + x_offset
-        elif (x + x_edge - x_offset) > width:
-            x = width - x_edge + x_offset
+        if (x_mouse - x_edge - x_offset) < 0:
+            x_mouse = x_edge + x_offset
+        elif (x_mouse + x_edge - x_offset) > width:
+            x_mouse = width - x_edge + x_offset
         
-        if (y - y_edge - y_offset) < 0:
-            y = y_edge + y_offset
-        elif (y + y_edge - y_offset) > height:
-            y = height - y_edge + y_offset
+        if (y_mouse - y_edge - y_offset) < 0:
+            y_mouse = y_edge + y_offset
+        elif (y_mouse + y_edge - y_offset) > height:
+            y_mouse = height - y_edge + y_offset
 
-        return (x-x_offset, y-y_offset)
+        return (x_mouse-x_offset, y_mouse-y_offset)
 
 
     def _get_mouse_pos(self) -> tuple:
